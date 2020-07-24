@@ -83,16 +83,16 @@ exports.handler = (event, context, callback) => {
                     },
                     Source: "kinnar@" + domain
                 };
-                ses.sendEmail(params, function (err, data) {
-                    callback(null, { err: err, data: data });
-                    if (err) {
-                        console.log(err);
-                        context.fail(err);
-                    } else {
-                        console.log(data);
-                        context.succeed(event);
-                    }
-                });
+                // ses.sendEmail(params, function (err, data) {
+                //     callback(null, { err: err, data: data });
+                //     if (err) {
+                //         console.log(err);
+                //         context.fail(err);
+                //     } else {
+                //         console.log(data);
+                //         context.succeed(event);
+                //     }
+                // });
             } else {
                 console.log("Email already sent at " + data.Item.timestamp + ". Please try again after 15 minutes");
             }
