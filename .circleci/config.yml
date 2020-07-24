@@ -1,0 +1,53 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+      - run: npm install
+
+  test:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-
+        
+      # run tests!
+      - run: 
+          name: Run tests with coverage
+          command: npm test --coverage
+
+      - run:
+          name: Deploy application
+          command: sls deploy --stage pre
+workflows:
+  version: 2
+  pr-check:
+    jobs:
+      - test
+  build_deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
