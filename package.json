@@ -1,0 +1,26 @@
+{
+  "name": "send_email",
+  "version": "1.0.0",
+  "description": "Function as a Service for AWS Lambda",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.719.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha **/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kinnarrk/faas.git"
+  },
+  "author": "Kinnar Kansara",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kinnarrk/faas/issues"
+  },
+  "homepage": "https://github.com/kinnarrk/faas#readme"
+}
