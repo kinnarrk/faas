@@ -58,6 +58,8 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  send_email:
+    handler: index.handler
   hello:
     handler: handler.hello
 #    The following are a few example events you can configure
