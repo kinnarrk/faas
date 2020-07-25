@@ -18,7 +18,7 @@ var dynamodb_table = process.env.DYNAMODB_TABLE_NAME || "csye6225";
 // }
 var ses = new aws.SES({ region: regionName });
 
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 // import { v4 as uuidv4 } from 'uuid';
 
 var ddb = new aws.DynamoDB({ apiVersion: '2012-08-10' });
@@ -29,7 +29,7 @@ exports.handler = (event, context, callback) => {
     console.log(event);
     const sns_email = event.Records[0].Sns.Message;
     console.log(sns_email)
-
+    console.log("Dynamodb table"+ dynamodb_table);
     var timestamp = new Date();
     // var expires = expires.setTime(expires.getTime() + (15*60*1000)); // Add 15 minutes.
     var expires = Math.floor((timestamp.getTime() + (ttl_minutes * 60 * 1000)) / 1000); // Add 15 minutes.
@@ -37,24 +37,26 @@ exports.handler = (event, context, callback) => {
     var params = {
         TableName: dynamodb_table,
         Key: {
-            'email': { S: sns_email }
+            "email":  {S: sns_email} 
         }
     };
     ddb.getItem(params, function (err, data) {
         if (err) {
-            console.log("Error", err);
+            console.log("Item error");
+            console.log("Error", err);            
         } else {
             console.log("Success", data.Item);
             var current_timestamp = Math.floor((timestamp.getTime()) / 1000);
             if((data.Item == undefined || data.Item == null) || 
-                data.Item.timetoexist > current_timestamp) {
+                Number(data.Item.timetoexist) < current_timestamp) {
+                
                 var params = {
                     TableName: dynamodb_table,
                     Item: {
-                        'id': { S: uuid },
-                        'timestamp': { S: timestamp.toISOString() },
                         'email': { S: sns_email },
-                        'timetoexist': { N: expires }
+                        'timestamp': { S: timestamp.toISOString() },
+                        'uuid': { S: uuid },
+                        'timetoexist': { S: expires+"" }
                     }
                 };
 
@@ -105,3 +107,13 @@ exports.handler = (event, context, callback) => {
 
 
 };
+
+exports.insertRecord = function(text) {
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(text, salt, (err, hash) => {
+            if (err) throw err;
+            console.info("bcrypt hash: " + hash);
+            return hash;
+        });
+    });
+}

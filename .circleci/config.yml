@@ -25,6 +25,8 @@ jobs:
           command: |
             sudo npm i -g serverless
             npm install
+            sudo apt-get update -y && sudo apt-get install zip unzip -y
+            sudo apt-get install awscli            
 
       - save_cache:
           paths:
@@ -36,9 +38,16 @@ jobs:
           name: Run tests with coverage
           command: npm test --coverage
 
-      - run:
-          name: Deploy application
-          command: sls deploy -f send_email
+      # - run:
+      #     name: Deploy application
+      #     command: sls deploy -f send_email
+
+      - run: 
+          name: Zip and deploy
+          command: |
+            zip -9 --exclude '*.git*' -r send_email.zip .            
+            aws lambda update-function-code --function-name send_email --zip-file fileb://send_email.zip --output json
+
 workflows:
   version: 2
   pr-check:
