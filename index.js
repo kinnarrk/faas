@@ -76,25 +76,28 @@ exports.handler = (event, context, callback) => {
                     Message: {
                         Body: {
                             Text: {
-                                Data: "Test"
+                                Data: "Click the link below to reset password:<br>\
+                                <a href='http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"'>\
+                                http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"</a><br>\
+                                Thank you."
                             }
                         },
                         Subject: {
-                            Data: "Test Email"
+                            Data: "Bookstore: Password Reset Email"
                         }
                     },
                     Source: "kinnar@" + domain
                 };
-                // ses.sendEmail(params, function (err, data) {
-                //     callback(null, { err: err, data: data });
-                //     if (err) {
-                //         console.log(err);
-                //         context.fail(err);
-                //     } else {
-                //         console.log(data);
-                //         context.succeed(event);
-                //     }
-                // });
+                ses.sendEmail(params, function (err, data) {
+                    callback(null, { err: err, data: data });
+                    if (err) {
+                        console.log(err);
+                        context.fail(err);
+                    } else {
+                        console.log(data);
+                        context.succeed(event);
+                    }
+                });
             } else {
                 console.log("Email already sent at " + data.Item.timestamp + ". Please try again after 15 minutes");
             }
