@@ -45,7 +45,7 @@ exports.handler = (event, context, callback) => {
             console.log("Item error");
             console.log("Error", err);            
         } else {
-            console.log("Success", data.Item);
+            console.log("Entry with email found", data.Item);
             var current_timestamp = Math.floor((timestamp.getTime()) / 1000);
             if((data.Item == undefined || data.Item == null) || 
                 Number(data.Item.timetoexist) < current_timestamp) {
