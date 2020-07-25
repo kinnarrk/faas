@@ -75,10 +75,16 @@ exports.handler = (event, context, callback) => {
                     },
                     Message: {
                         Body: {
-                            Text: {
+                            Html: {
+                                Charset: "UTF-8",
                                 Data: "Click the link below to reset password:<br>\
                                 <a href='http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"'>\
                                 http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"</a><br>\
+                                Thank you."
+                            },
+                            Text: {
+                                Data: "Copy the link below and paste it in the browser to reset password:\n\
+                                http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"\n\
                                 Thank you."
                             }
                         },
