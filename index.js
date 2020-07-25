@@ -48,7 +48,7 @@ exports.handler = (event, context, callback) => {
             console.log("Entry with email found", data.Item);
             var current_timestamp = Math.floor((timestamp.getTime()) / 1000);
             if((data.Item == undefined || data.Item == null) || 
-                Number(data.Item.timetoexist) < current_timestamp) {
+                data.Item.timetoexist < current_timestamp) {
                 
                 var params = {
                     TableName: dynamodb_table,
@@ -56,7 +56,7 @@ exports.handler = (event, context, callback) => {
                         'email': { S: sns_email },
                         'timestamp': { S: timestamp.toISOString() },
                         'token': { S: uuid },
-                        'timetoexist': { S: expires+"" }
+                        'timetoexist': { N: expires.toString() }
                     }
                 };
 
