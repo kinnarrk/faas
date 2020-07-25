@@ -14,24 +14,24 @@ jobs:
     steps:
       - checkout
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+      # - restore_cache:
+      #     keys:
+      #     - v1-dependencies-
+      #     # fallback to using the latest cache if no exact match is found
+      #     - v1-dependencies-
 
       - run:
-          name: Install Serverless CLI and dependencies
+          name: Install dependencies, Zip and AWS CLI
           command: |
-            sudo npm i -g serverless
+            # sudo npm i -g serverless
             npm install
             sudo apt-get update -y && sudo apt-get install zip unzip -y
             sudo apt-get install awscli            
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-
+      # - save_cache:
+      #     paths:
+      #       - node_modules
+      #     key: v1-dependencies-
         
       # run tests!
       - run: 

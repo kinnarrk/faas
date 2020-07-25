@@ -55,7 +55,7 @@ exports.handler = (event, context, callback) => {
                     Item: {
                         'email': { S: sns_email },
                         'timestamp': { S: timestamp.toISOString() },
-                        'uuid': { S: uuid },
+                        'token': { S: uuid },
                         'timetoexist': { S: expires+"" }
                     }
                 };
@@ -78,13 +78,13 @@ exports.handler = (event, context, callback) => {
                             Html: {
                                 Charset: "UTF-8",
                                 Data: "Click the link below to reset password:<br>\
-                                <a href='http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"'>\
-                                http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"</a><br>\
+                                <a href='http://"+domain+"/users/resetpassword?email="+sns_email+"&token="+uuid+"'>\
+                                http://"+domain+"/users/resetpassword?email="+sns_email+"&token="+uuid+"</a><br>\
                                 Thank you."
                             },
                             Text: {
                                 Data: "Copy the link below and paste it in the browser to reset password:\n\
-                                http://"+domain+"/users/resetpassword?email="+sns_email+"&uuid="+uuid+"\n\
+                                http://"+domain+"/users/resetpassword?email="+sns_email+"&token="+uuid+"\n\
                                 Thank you."
                             }
                         },
